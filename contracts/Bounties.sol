@@ -17,6 +17,8 @@ contract Bounties {
             }
             bounties[issueLink].totalAmount += msg.value;
             bounties[issueLink].donations[msg.sender] += msg.value;
+
+            return true;
         }
 
         return false;        
