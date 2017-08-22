@@ -4,6 +4,7 @@ contract Bounties {
 
     enum BountyState { Open, Closed }
 
+    event BountyClearedEvent(string issueLink, address claimant);
     event BountyClaimEvent(string issueLink, string solutionLink, address claimant);
     event BountyClaimAcceptedEvent(string issueLink, string solutionLink, address claimant);
     
@@ -26,6 +27,8 @@ contract Bounties {
     mapping (string => Bounty) bounties;
 
     function addBounty(string issueLink) payable {
+
+        // some ether and no empty issueLink
         require(msg.value > 0 && bytes(issueLink).length > 0);
 
         bounties[issueLink].totalAmount += msg.value;
@@ -33,24 +36,33 @@ contract Bounties {
     }
 
     function claimBounty(string issueLink, string solutionLink) {
-        require(bytes(solutionLink).length > 0 && 
-                bounties[issueLink].claims[solutionLink].claimant == address(0)); // address of claim is empty
+
+        // no empty solution link
+        // address of claim is empty
+        require(
+            bytes(solutionLink).length > 0 && 
+            bounties[issueLink].claims[solutionLink].claimant == address(0)
+        );
            
         bounties[issueLink].claims[solutionLink].claimant = msg.sender;
         BountyClaimEvent(issueLink, solutionLink, msg.sender);
     }
 
     function supportClaim(string issueLink, string solutionLink) {
+
+        // donator must have made a donation
+        // not yet supported
+        // Bounty must still be open
         require(
-            bounties[issueLink].donations[msg.sender] > 0 &&  // donator must have made a donation
-            !bounties[issueLink].claims[solutionLink].donatorSupported[msg.sender] && // not yet supported
-            bounties[issueLink].state == BountyState.Open // Bounty must still be open
+            bounties[issueLink].donations[msg.sender] > 0 && 
+            !bounties[issueLink].claims[solutionLink].donatorSupported[msg.sender] && 
+            bounties[issueLink].state == BountyState.Open 
         ); 
 
         bounties[issueLink].claims[solutionLink].donatorSupported[msg.sender] = true;
-        bounties[issueLink].claims[solutionLink].donatorSupport += (bounties[issueLink].donations[msg.sender] / bounties[issueLink].totalAmount) * 100;
+        bounties[issueLink].claims[solutionLink].donatorSupport += (bounties[issueLink].donations[msg.sender] * 100) / bounties[issueLink].totalAmount;
 
-        if (bounties[issueLink].claims[solutionLink].donatorSupport > 50) {
+        if (bounties[issueLink].claims[solutionLink].donatorSupport >= 40) {
             bounties[issueLink].claimant = bounties[issueLink].claims[solutionLink].claimant;
             bounties[issueLink].state = BountyState.Closed;
             BountyClaimAcceptedEvent(issueLink, solutionLink, bounties[issueLink].claimant);
@@ -58,14 +70,28 @@ contract Bounties {
     }
 
     function clearBounty(string issueLink) {
+
+        // bounty is closed and claimant is the message sender
         require(
             bounties[issueLink].state == BountyState.Closed &&
             bounties[issueLink].claimant == msg.sender
         );
 
-        let payoutAmount = bounties[issueLink].totalAmount;
+        uint payoutAmount = bounties[issueLink].totalAmount;
         bounties[issueLink].totalAmount = 0;
+        BountyClearedEvent(issueLink, msg.sender);
         msg.sender.transfer(payoutAmount);
+    }
+
+    function getBountyInfo(string issueLink) constant returns (uint, BountyState, address) {
+        return (bounties[issueLink].totalAmount, bounties[issueLink].state, bounties[issueLink].claimant);
+    }
+
+    function getBountyClaimInfo(string issueLink, string solutionLink) constant returns (uint, address) {
+        return (
+            bounties[issueLink].claims[solutionLink].donatorSupport,
+            bounties[issueLink].claims[solutionLink].claimant
+        );
     }
 
 }
