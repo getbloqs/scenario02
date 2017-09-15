@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+    <div id="vue">
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-5">Subdomain Registrierung</h1>
+                <p class="lead">Registrieren Sie sich eine Subdomain und verlinken Sie auf Ihre eigene Seite oder Ihr Profil.</p>
+                <hr class="my-4">
+                <p class="lead">
+                    <button v-on:click="openRegistrationForm" class="btn btn-primary btn-lg" href="#" role="button">Subdomain registrieren</button>
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div v-if="success" class="alert alert-success" role="alert">
+                <button v-on:click="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Ihre Subdomain wurde erfolgreich registriert!
+            </div>
+
+            <div v-if="error" class="alert alert-danger" role="alert">
+                <button v-on:click="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Bei Ihrer Subdomain Registrierung ist ein Fehler aufgetreten!
+            </div>
+        
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Neuste Registrierungen</h4>
+                    
+                    <div class="card-columns">
+                        <div v-for="item in registrations" class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ item.name }}</h4>
+                                <p class="card-text"><small class="text-muted">{{ item.validUntil }}</small></p>
+                                <a v-bind:href="item.link" class="card-link">Link</a>                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <registration-form v-on:error="open = false; error = true;" v-on:success="open = false; success = true;" v-on:closed="open = false" :open="open"></registration-form>
+    </div>   
+
+    <script id="registration-form" type="text/x-template">
+        <div>
+            <div v-bind:style="styling" v-bind:class="{ show : open }" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Subdomain Registrierung</h5>
+                            <button v-on:click="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="subdomain">Subdomain Name</label>
+                                    <input v-bind:class="{ 'is-invalid': isInvalidSubdomain }" v-model="subdomain" type="text" class="form-control" id="subdomain"
+                                        placeholder="">
+                                    <small class="invalid-feedback">Geben Sie eine gültige Subdomain an</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="redirect">Redirect Adresse</label>
+                                    <input v-bind:class="{ 'is-invalid': isInvalidRedirect }" v-model="redirect" type="text" class="form-control" id="redirect"
+                                        placeholder="http://example.com">
+                                    <small class="invalid-feedback">Geben Sie eine gültige Web Adresse ein</small>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" v-on:click="close">Abbrechen</button>
+                            <button v-on:click="register" type="button" class="btn btn-primary">Registrieren</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="open" class="modal-backdrop show"></div>
+        </div>
+    </script>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
