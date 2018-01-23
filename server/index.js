@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const express = require('express');
 const Web3 = require('web3');
 const config = require('./contract.config.json');

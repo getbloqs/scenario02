@@ -1,0 +1,15 @@
+[Unit]
+Description=subdomain redirect service
+
+[Service]
+ExecStart=//path to index.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=subdomain-redirect-service
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+

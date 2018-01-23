@@ -19,6 +19,16 @@ For installing all the project dependencies `npm i` needs to be triggered inside
 
 ## Server Application
 
+The server part is a nodejs application. For testing the application can be run on localhost by simply executing the `npm start`. The application is run on `localhost:3000`. For server deployment a systemd service description is available. The following steps are necessary to run on a live deployment:
+
+ - `nodejs` must be installed
+ - clone the git repository on your server: `git clone https://github.com/getbloqs/scenario02`
+ - change the absolute path to the `index.js` inside the `subdomain-redirect.service` file
+ - copy the `subdomain-redirect.service` file to `/lib/systemd/system/subdomain-redirect.service` and set the following permissions `sudo chmod 644 /lib/systemd/system/subdomain-redirect.service`
+ - `sudo systemctl daemon-reload` reloads the service definitions and `sudo systemctl enable subdomain-redirect.service` should enable the service
+ - after a reboot the service should run
+ - The service listens on port 3000 for connections over http port 80 a proxy (e.g. apache2) should be configured
+
 ## Local development
 
 For local development a local Ethereum blockchain is required. The most straightforward approach is to use [Ganache](http://truffleframework.com/ganache/). Ganache has a user interface and is easy to setup.
