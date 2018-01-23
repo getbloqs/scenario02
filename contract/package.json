@@ -1,0 +1,15 @@
+{
+  "name": "bloqs-scenario03-contract",
+  "version": "1.0.0",
+  "description": "bloqs scenario 03",
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "author": "Stefan Huber",
+  "license": "BSD",
+  "devDependencies": {
+    "truffle-hdwallet-provider": "0.0.3",
+    "zeppelin-solidity": "^1.5.0"
+  },
+  "dependencies": {}
+}

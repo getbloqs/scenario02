@@ -1,0 +1,15 @@
+{
+  "name": "scenario02-server",
+  "version": "1.0.0",
+  "description": "server application for querying subdomain registrations",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Stefan Huber",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "^4.16.2",
+    "web3": "^0.20.0"
+  }
+}
