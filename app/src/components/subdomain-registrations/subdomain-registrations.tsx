@@ -27,7 +27,7 @@ export class SubdomainRegistrations {
                             <tbody>
                                 {this.registrations.map((registration) => 
                                 <tr>
-                                    <td><a href={registration.redirect}>{registration.name}</a></td>
+                                    <td><a href={"http://" + registration.name + ".bloqs.at"}>{registration.name} ({registration.redirect})</a></td>
                                     <td>{(new Date(registration.registeredUntil)).toLocaleDateString()}</td>
                                     <td><a href={'https://ropsten.etherscan.io/address/' + registration.owner}>{registration.owner}</a></td>
                                 </tr>

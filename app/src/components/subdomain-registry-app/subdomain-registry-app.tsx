@@ -8,6 +8,7 @@ import { SubdomainRegistryImpl } from '../../services/subdomain-registry';
 })
 export class SubdomainRegistryApp {
 
+    @State() contract:string;
     @State() countRegistrations:number = 0;
     @State() registrations:any = [];
     @State() noWeb3 = true;
@@ -17,13 +18,14 @@ export class SubdomainRegistryApp {
             Config.getConfig() ,
             Config.getAbi('SubdomainRedirect')
         ]).then( (response:any[]) => {
-            let result = SubdomainRegistryImpl.init(response[0].contract, response[1]);
+            this.contract = response[0].contract;
+            let result = SubdomainRegistryImpl.init(this.contract, response[1]);
 
             if (result == false) {
                 this.noWeb3 = true;
             } else {
                 this.noWeb3 = false;
-                window['subdomainRegistry'] = SubdomainRegistryImpl.init(response[0].contract, response[1]);
+                window['subdomainRegistry'] = result;
                 this.load();
             }            
         });           
@@ -48,7 +50,7 @@ export class SubdomainRegistryApp {
                     <div class="jumbotron">
                         <h1 class="display-4">Subdomain registry</h1>
                         
-                        <p>This is a demo for registering subdomains and provide a link for redirection. Currently, there are <b>{this.countRegistrations}</b> subdomains registered.</p>
+                        <p>This is a demo for registering subdomains and provide a link for redirection. Currently, there are <b>{this.countRegistrations}</b> subdomains registered. The smart contract can be viewed on etherscan: <a href={'https://ropsten.etherscan.io/address/' + this.contract}>{this.contract}</a></p>
 
                         <subdomain-registry-form></subdomain-registry-form><subdomain-renew-form></subdomain-renew-form><subdomain-update-form></subdomain-update-form>    
                         

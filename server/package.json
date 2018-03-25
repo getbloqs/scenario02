@@ -1,5 +1,5 @@
 {
-  "name": "scenario02-server",
+  "name": "bloqs-scenario02-server",
   "version": "1.0.0",
   "description": "server application for querying subdomain registrations",
   "main": "index.js",

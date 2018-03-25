@@ -1,8 +1,8 @@
-# Scenario 03 - ICO demonstration
+# Scenario 02 - Subdomain registry
 
 ## Smart contracts
 
-The smart contracts for the ICO demonstration are inside the `contract` directory. The project requires the installation of [truffle](http://truffleframework.com/) to handle development operations.
+The smart contracts for the subdomain registry are inside the `contract` directory. The project requires the installation of [truffle](http://truffleframework.com/) to handle development operations.
 
 Truffle can be installed as a global npm package:
 ```
@@ -13,7 +13,7 @@ For installing all the project dependencies `npm i` needs to be triggered inside
 
 ## Web Application
 
-The web application for a demo ICO interface is inside the `app` directory. The application is build with the [StencilJS](https://stenciljs.com/) compiler.
+The web application for the subdomain registry is inside the `app` directory. The application is build with the [StencilJS](https://stenciljs.com/) compiler.
 
 For installing all the project dependencies `npm i` needs to be triggered inside the `app` directory. The project can be built for deployment via the `npmr run build` command. The result is available inside the `www` directory.
 
@@ -45,7 +45,7 @@ In the following the steps are described how to setup a local version of the ICO
 For deploying the smart contract on the `ropsten` ethereum testnet the following steps are required:
 
  - A `secret.json` file needs to be created inside the `contract` directory
- - Inside the `contract` directory the command `truffle --reset --network ropsten` would deploy the contract on the ropsten network. Be aware that a private key with some amount of (testnet) ether is required.
+ - Inside the `contract` directory the command `truffle migrate --reset --network ropsten` would deploy the contract on the ropsten network. Be aware that a private key with some amount of (testnet) ether is required.
 
 ## `secret.json` file format
 
